@@ -1,4 +1,5 @@
-import { PlayerProvider } from "@/context/playerInfo"
+import { PlayerProvider } from "@/context/playerContext"
+import { SalaProvider } from "@/context/salaContext"
 import { ThemeProvider } from "@/context/themeContext"
 import { Stack } from "expo-router"
 
@@ -6,7 +7,9 @@ export default function Layout() {
   return (
     <ThemeProvider>
       <PlayerProvider>
-        <Stack screenOptions={{ headerShown: false }} />
+        <SalaProvider>
+          <Stack screenOptions={{ headerShown: false, gestureEnabled: false }} />
+        </SalaProvider>
       </PlayerProvider>
     </ThemeProvider>
   )

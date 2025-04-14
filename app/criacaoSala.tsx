@@ -1,15 +1,14 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
-import { FontAwesome } from "@expo/vector-icons"; // Biblioteca de ícones
 import { criarSala, socket } from "@/services/socket";
 import { RoomDTO } from "@/dto/roomDTO";
 import { Href, router } from "expo-router";
-import { usePlayer } from "@/context/playerInfo";
+import { usePlayer } from "@/context/playerContext";
 import { useTheme } from "@/context/themeContext";
 import { darkTheme, lightTheme } from "@/styles/theme";
 
 export default function CriacaoSala() {
-  const playerData = usePlayer();
+  const {player} = usePlayer();
   const [conectado, setConectado] = useState(false);
   const { theme, mudarTema } = useTheme();
   const styles = theme === "dark" ? darkTheme : lightTheme;
@@ -46,9 +45,7 @@ export default function CriacaoSala() {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => criarSala({
-          nomeJogador: playerData.nomeJogador
-        })}
+        onPress={() => criarSala({ player })}
         style={styles.button}
       >
         <Text style={styles.buttonText}>Sala pública</Text>

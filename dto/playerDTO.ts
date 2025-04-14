@@ -1,13 +1,14 @@
 export interface PlayerDTO {
-  name: string
-  wins: number
-  funcao: Funcao
+  nome: string
+  vitorias: number
+  funcao?: FuncaoDTO
   socketId: string
   lugar?: number
-  begin?: boolean
+  inicia?: boolean
+  aceitarVotacao?: boolean
 }
 
-export enum Funcao {
+export enum FuncaoDTO {
   ESPIAO = 0,
   EQUIPE = 1
 }

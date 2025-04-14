@@ -2,12 +2,12 @@ import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import { useEffect, useState } from "react";
 import { entrarSala, socket } from "@/services/socket";
 import { Href, router, useLocalSearchParams } from "expo-router";
-import { usePlayer } from "@/context/playerInfo";
+import { usePlayer } from "@/context/playerContext";
 import { useTheme } from "@/context/themeContext";
 import { darkTheme, lightTheme } from "@/styles/theme";
 
 export default function entrarSalaPrivada() {
-  const playerData = usePlayer();
+  const {player} = usePlayer();
   const [password, setPassword] = useState('');
   const [erro, setErro] = useState('')
   const { theme } = useTheme();
@@ -16,8 +16,8 @@ export default function entrarSalaPrivada() {
   const codigo = params.codigo as string
 
   useEffect(() => {
-    socket.on('salaEncontrada', (sala) => {
-      router.push({ pathname: '/room', params: { id: sala.id } })
+    socket.on('salaEncontrada', () => {
+      router.push({ pathname: '/room' })
     })
 
     socket.on("erro", (message: string) => {
@@ -41,7 +41,7 @@ export default function entrarSalaPrivada() {
         maxLength={6} 
       />
       <TouchableOpacity
-        onPress={() => entrarSala(codigo, playerData.nomeJogador, playerData.wins, password)}
+        onPress={() => entrarSala(codigo, player, password)}
         style={[
           styles.button,
           { 

@@ -1,6 +1,8 @@
+import { PlayerDTO } from "./playerDTO"
+
 export interface EntrarSalaDTO {
   codigo: string
-  nomeJogador: string
-  wins: number
+  player: PlayerDTO
   password?: string
+  byPass?: boolean
 }

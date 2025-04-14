@@ -1,4 +1,4 @@
-import { usePlayer } from '@/context/playerInfo'
+import { usePlayer } from '@/context/playerContext'
 import { useTheme } from '@/context/themeContext'
 import { entrarSala, socket } from '@/services/socket'
 import { darkTheme, lightTheme } from '@/styles/theme'
@@ -7,14 +7,14 @@ import { useEffect, useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 export default function BuscarSala() {
-  const player = usePlayer()
+  const {player} = usePlayer()
   const [codigo, setCodigo] = useState('')
   const { theme } = useTheme()
   const styles = theme === "dark" ?  darkTheme : lightTheme
 
   useEffect(() => {
-    socket.on('salaEncontrada', (sala) => {
-      router.push({ pathname: '/room', params: { id: sala.id } })
+    socket.on('salaEncontrada', () => {
+      router.push({ pathname: '/room' })
     })
 
     socket.on('salaPrivada', (codigo: string) => {
@@ -44,7 +44,7 @@ export default function BuscarSala() {
           }
         ]}
         onPress={() => {
-          entrarSala(codigo, player.nomeJogador, player.wins)
+          entrarSala(codigo, player)
         }}
       >
         <Text style={[styles.buttonText, {color: '#FFF'}]}>Buscar sala</Text>

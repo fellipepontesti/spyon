@@ -210,9 +210,61 @@ export const lightTheme = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
   },  
+  backgroundImage: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    padding: 24,
+    borderRadius: 16,
+    alignItems: "center",
+  },
+  
+  vencedorTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#FFF",
+    textAlign: "center",
+    marginBottom: 12,
+  },
+  
+  vencedorSubtitle: {
+    fontSize: 18,
+    color: "#FFF",
+    textAlign: "center",
+  },
 });
 
 export const darkTheme = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    padding: 24,
+    borderRadius: 16,
+    alignItems: "center",
+  },
+  
+  vencedorTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#FFF",
+    textAlign: "center",
+    marginBottom: 12,
+  },
+  
+  vencedorSubtitle: {
+    fontSize: 18,
+    color: "#FFF",
+    textAlign: "center",
+  },
   modalContainer: {
     flex: 1,
     justifyContent: "center",

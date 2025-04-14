@@ -4,12 +4,12 @@ import { FontAwesome } from "@expo/vector-icons"; // Biblioteca de ícones
 import { criarSala, socket } from "@/services/socket";
 import { RoomDTO } from "@/dto/roomDTO";
 import { Href, router } from "expo-router";
-import { usePlayer } from "@/context/playerInfo";
+import { usePlayer } from "@/context/playerContext";
 import { useTheme } from "@/context/themeContext";
 import { darkTheme, lightTheme } from "@/styles/theme";
 
 export default function criarSalaPrivada() {
-  const playerData = usePlayer();
+  const {player} = usePlayer();
   const [password, setPassword] = useState('');
   const { theme, mudarTema } = useTheme();
   const styles = theme === "dark" ? darkTheme : lightTheme;
@@ -35,10 +35,7 @@ export default function criarSalaPrivada() {
       />
       <TouchableOpacity
         disabled={password.length < 4}
-        onPress={() => criarSala({ 
-          nomeJogador: playerData.nomeJogador,
-          password
-        })}
+        onPress={() => criarSala({ player, password })}
         style={[
           styles.button,
           { 
