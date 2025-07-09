@@ -24,7 +24,6 @@ export default function Vencedor() {
 
   useEffect(() => {
     const handleSalaEncontrada = (sala: RoomDataDTO) => {
-      console.log('---> novasala: ', sala)
       setSala(sala)
       router.replace({ pathname: "/room", params: { data: JSON.stringify(sala) } })
     }
@@ -44,7 +43,7 @@ export default function Vencedor() {
           setMostrarResultado(true)
           setTimeout(() => {
             setMostrarBotoes(true)
-          }, 8000)
+          }, 2000)
           return 0
         }
         return prev - 1
@@ -75,6 +74,7 @@ export default function Vencedor() {
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
+                console.log(socket.id, 'socket id')
                 voltarPraSala(sala!.codigo, player)
               }}
             >

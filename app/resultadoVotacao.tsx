@@ -20,7 +20,6 @@ export default function ResultadoVotacao() {
   const [mostrarResultado, setMostrarResultado] = useState(false)
   const params = useLocalSearchParams()
   const [vencedor, setVencedor] = useState('')
-  const mensagem = vencedor === "espião" ? "🎉 O Espião venceu!" : "🎉 A Equipe venceu!"
 
   useEffect(() => {
     socket.on("skip", () => {
@@ -35,9 +34,8 @@ export default function ResultadoVotacao() {
       setVitorias(player.vitorias + 1)
     })
 
-    socket.on("fimDeJogo", (data: { vencedor: string }) => {
-      setVencedor(data.vencedor)
-      router.replace({ pathname: "/vencedor", params: { codigo: sala?.codigo, vencedor } })
+    socket.on("fimDeJogo", (data) => {
+      router.replace({ pathname: "/vencedor", params: { codigo: sala?.codigo, vencedor: data.vencedor } })
     })
 
     return () => {
@@ -99,8 +97,8 @@ export default function ResultadoVotacao() {
             )}
             <Text style={styles.title}>
               {!mostrarResultado
-                ? `Revelando resultado em ${tempo} ${tempo === 1 ? "segundo" : "segundos"}...`
-                : mensagem}
+                && `Revelando resultado em ${tempo} ${tempo === 1 ? "segundo" : "segundos"}...`
+              }
             </Text>
           </View>
         </Modal>

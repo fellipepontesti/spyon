@@ -3,7 +3,7 @@ import { CriarSalaDTO } from "@/dto/criarSalaDTO"
 import { EntrarSalaDTO } from "@/dto/entrarSalaDTO"
 import { PlayerDTO } from "@/dto/playerDTO"
 
-const SERVER_URL = "http://192.168.0.8:3000"
+const SERVER_URL = "http://192.168.0.3:3000"
 export const socket = io(SERVER_URL, { transports: ["websocket"] })
 
 export const criarSala = (data: CriarSalaDTO) => {
