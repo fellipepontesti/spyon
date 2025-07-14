@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import { useEffect, useState } from "react";
-import { FontAwesome } from "@expo/vector-icons"; // Biblioteca de ícones
 import { criarSala, socket } from "@/services/socket";
 import { RoomDTO } from "@/dto/roomDTO";
 import { Href, router } from "expo-router";

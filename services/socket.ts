@@ -28,10 +28,6 @@ export const enviarMensagem = (salaId: string, mensagem: string) => {
   socket.emit("mensagem", { salaId, mensagem })
 }
 
-socket.on("novaMensagem", (dados: { jogador: string, mensagem: string }) => {
-  console.log(`Nova mensagem de ${dados.jogador}: ${dados.mensagem}`)
-})
-
 export const desconectar = (codigo: string) => {
   socket.emit("sairDaSala", codigo)
 }

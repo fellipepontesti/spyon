@@ -7,19 +7,22 @@ import { darkTheme, lightTheme } from "@/styles/theme"
 import { RoomDTO, RoomDataDTO } from "@/dto/roomDTO"
 import { entrarSala, socket } from "@/services/socket"
 import { FontAwesome } from "@expo/vector-icons"
+import { ListarSalasOutputDTO } from "@/dto/listarSalasDTO"
 
 export default function ListaDeSalas() {
   const { player } = usePlayer()
   const [salas, setSalas] = useState<RoomDataDTO[]>([])
   const { theme } = useTheme()
   const styles = theme === "dark" ? darkTheme : lightTheme
+  const [count, setCount] = useState(0)
 
   const [page, setPage] = useState(1)
-  const perPage = 12
+  const limit = 12
 
   useEffect(() => {
-    socket.on("listaDeSalas", (data: RoomDTO) => {
-      setSalas(Object.values(data))
+    socket.on("listaDeSalas", (data: ListarSalasOutputDTO) => {
+      setSalas(Object.values(data.salas))
+      setCount(data.count)
     })
 
     socket.on("salaRemovida", (codigo: string) => {
@@ -56,10 +59,6 @@ export default function ListaDeSalas() {
     socket.emit("listarSalas", { page })
   }, [page])
 
-  const atualizarSalas = () => {
-    socket.emit("listarSalas", { page })
-  }
-
   return (
     <View style={styles.container}>
   <Text style={styles.title}>Salas online</Text>
@@ -92,31 +91,25 @@ export default function ListaDeSalas() {
   />
 
   <View style={styles.paginationControls}>
-    <TouchableOpacity
-      style={styles.pageButton}
-      onPress={() => {
-        setPage(prev => Math.max(prev - 1, 1))
-      }}
-      disabled={page === 1}
-    >
-      <Text style={styles.pageButtonText}>{'<'}</Text>
-    </TouchableOpacity>
+    {page > 1 && (
+      <TouchableOpacity
+        style={styles.pageButton}
+        onPress={() => setPage(prev => Math.max(prev - 1, 1))}
+      >
+        <Text style={styles.pageButtonText}>{'<'}</Text>
+      </TouchableOpacity>
+    )}
 
     <Text style={styles.pageIndicator}>Página {page}</Text>
 
-    <TouchableOpacity
-      style={styles.pageButton}
-      onPress={() => {
-        const totalPaginas = Math.ceil(
-          Object.values(salas).filter(s => !s.jogoIniciado).length / perPage
-        )
-        if (page < totalPaginas) {
-          setPage(prev => prev + 1)
-        }
-      }}
-    >
-      <Text style={styles.pageButtonText}>{'>'}</Text>
-    </TouchableOpacity>
+    {page < Math.ceil(count / limit) && (
+      <TouchableOpacity
+        style={styles.pageButton}
+        onPress={() => setPage(prev => prev + 1)}
+      >
+        <Text style={styles.pageButtonText}>{'>'}</Text>
+      </TouchableOpacity>
+    )}
   </View>
 
   <TouchableOpacity
