@@ -5,4 +5,5 @@ export interface EntrarSalaDTO {
   player: PlayerDTO
   password?: string
   byPass?: boolean
+  owner?: boolean
 }

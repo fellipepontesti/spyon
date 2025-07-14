@@ -236,9 +236,61 @@ export const lightTheme = StyleSheet.create({
     color: "#FFF",
     textAlign: "center",
   },
+
+  paginationControls: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+
+  pageButton: {
+    padding: 15,
+    backgroundColor: '#000',
+    borderRadius: 8,
+  },
+
+  pageButtonText: {
+    color: '#FFF',
+    fontWeight: 'bold',
+  },
+
+  pageIndicator: {
+    padding: 10,
+    paddingLeft: 55,
+    paddingRight: 55,
+    color: '#000',
+    fontSize: 16,
+  },
 });
 
 export const darkTheme = StyleSheet.create({
+  paginationControls: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+
+  pageButton: {
+    padding: 15,
+    backgroundColor: '#FFF',
+    borderRadius: 8,
+  },
+
+  pageButtonText: {
+    color: '#000',
+    fontWeight: 'bold',
+  },
+
+  pageIndicator: {
+    padding: 10,
+    paddingLeft: 55,
+    paddingRight: 55,
+    color: '#FFF',
+    fontSize: 16,
+  },
+
   backgroundImage: {
     flex: 1,
     justifyContent: "center",

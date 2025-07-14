@@ -53,31 +53,13 @@ export default function Home() {
 
       <TouchableOpacity
         onPress={() => {
-          socket.emit('listarSalas')
+          socket.emit('listarSalas', {page: 1})
           router.replace("/listaDeSalas" as Href)
         }}
         style={styles.button}
       >
         <Text style={styles.buttonText}>Lista de salas</Text>
       </TouchableOpacity>
-
-      {/* <TouchableOpacity
-        onPress={() => {
-          socket.emit('simularFimDeJogo', { vencedor: 'equipe' })
-        }}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>Simular equipe</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => {
-          socket.emit('simularFimDeJogo', { vencedor: 'espião' })
-        }}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>Simular espião</Text>
-      </TouchableOpacity> */}
 
       <TouchableOpacity style={styles.themeButton} onPress={mudarTema}>
         <FontAwesome

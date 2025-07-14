@@ -5,7 +5,7 @@ import LottieView from "lottie-react-native"
 import { darkTheme, lightTheme } from "@/styles/theme"
 import { useTheme } from "@/context/themeContext"
 import { useSala } from "@/context/salaContext"
-import { socket, voltarPraSala } from "@/services/socket"
+import { entrarSala, socket, voltarPraSala } from "@/services/socket"
 import { usePlayer } from "@/context/playerContext"
 import { RoomDataDTO } from "@/dto/roomDTO"
 
@@ -18,22 +18,58 @@ export default function Vencedor() {
   const [tempo, setTempo] = useState(5)
   const [mostrarResultado, setMostrarResultado] = useState(false)
   const [mostrarBotoes, setMostrarBotoes] = useState(false)
+  const [esperandoDonoDaSala, setEsperandoDonoDaSala] = useState(false)
+  const [salaLiberada, setSalaLiberada] = useState(false)
+  const [redirecionar, setRedirecionar] = useState(false)
 
   const vencedor = params.vencedor === "espião" ? "espião" : "equipe"
   const mensagem = vencedor === "espião" ? "🎉 O Espião venceu!" : "🎉 A Equipe venceu!"
 
+  const voltarPraSala = () => {
+    socket.emit('voltarParaSala', {
+      player,
+      codigo: sala?.codigo
+    })
+
+    if (salaLiberada && socket.id !== sala?.socketIdOwner) {
+      entrarSala(sala!.codigo, player)
+    } else {
+      setEsperandoDonoDaSala(true)
+      setRedirecionar(true)
+    }
+  }
+
   useEffect(() => {
+    const handleVoltarOwner = () => {
+      entrarSala(sala!.codigo, player, undefined, true)
+    }
+
+    const handleLiberarSala = () => { setSalaLiberada(true) }
+
     const handleSalaEncontrada = (sala: RoomDataDTO) => {
+      setSalaLiberada(false)
+      setRedirecionar(false)
+      setEsperandoDonoDaSala(false)
       setSala(sala)
       router.replace({ pathname: "/room", params: { data: JSON.stringify(sala) } })
     }
   
+    socket.on("voltarOwner", handleVoltarOwner)
     socket.on("salaEncontrada", handleSalaEncontrada)
-  
+    socket.on("salaLiberada", handleLiberarSala)
+    
     return () => {
+      socket.off("voltarOwner", handleVoltarOwner)
+      socket.off("salaLiberada", handleLiberarSala)
       socket.off("salaEncontrada", handleSalaEncontrada)
     }
   }, [])
+
+  useEffect(() => {
+    if (sala?.socketIdOwner !== socket.id && redirecionar) {
+      entrarSala(sala!.codigo, player)
+    }
+  }, [salaLiberada])
 
   useEffect(() => {
     const intervalo = setInterval(() => {
@@ -73,12 +109,9 @@ export default function Vencedor() {
           <>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => {
-                console.log(socket.id, 'socket id')
-                voltarPraSala(sala!.codigo, player)
-              }}
+              onPress={() => voltarPraSala()}
             >
-              <Text style={styles.buttonText}>Voltar pro lobby</Text>
+              <Text style={styles.buttonText}>Voltar pra sala</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.redButton}
@@ -88,7 +121,17 @@ export default function Vencedor() {
             >
               <Text style={styles.gameButtonText}>Sair do jogo</Text>
             </TouchableOpacity>
+
+            <Text style={styles.title}>
+              {esperandoDonoDaSala &&
+                'Aguardando o dono abrir a sala...'}
+            </Text>
+
+            <Text style={styles.title}>
+              {`Sala liberada: ${salaLiberada}, Redirecionar: ${redirecionar}, Esperando dono da sala: ${esperandoDonoDaSala}`}
+            </Text>
           </>
+
         )}
       </View>
     </Modal>

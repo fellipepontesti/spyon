@@ -6,8 +6,8 @@ import {
   socket
 } from "@/services/socket"
 import { View, Text, TouchableOpacity, Modal } from "react-native"
-import { useEffect, useLayoutEffect, useState } from "react"
-import { Href, router, useLocalSearchParams, useNavigation } from "expo-router"
+import { useEffect, useState } from "react"
+import { Href, router, useLocalSearchParams } from "expo-router"
 import { darkTheme, lightTheme } from "@/styles/theme"
 import { useTheme } from "@/context/themeContext"
 import { useSala } from "@/context/salaContext"

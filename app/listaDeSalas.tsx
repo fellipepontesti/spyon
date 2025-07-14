@@ -14,9 +14,12 @@ export default function ListaDeSalas() {
   const { theme } = useTheme()
   const styles = theme === "dark" ? darkTheme : lightTheme
 
+  const [page, setPage] = useState(1)
+  const perPage = 12
+
   useEffect(() => {
     socket.on("listaDeSalas", (data: RoomDTO) => {
-      setSalas(Object.values(data).slice(0, 15))
+      setSalas(Object.values(data))
     })
 
     socket.on("salaRemovida", (codigo: string) => {
@@ -49,43 +52,79 @@ export default function ListaDeSalas() {
     }
   }, [])  
 
+  useEffect(() => {
+    socket.emit("listarSalas", { page })
+  }, [page])
+
+  const atualizarSalas = () => {
+    socket.emit("listarSalas", { page })
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Salas online</Text>
+  <Text style={styles.title}>Salas online</Text>
 
-      <FlatList
-        data={salas}
-        keyExtractor={(item) => item.codigo}
-        numColumns={3}
-        columnWrapperStyle={styles.row}
-        renderItem={({ item }) => (
-          <TouchableOpacity 
-            style={styles.playerCard} 
-            onPress={() => {
-              item.privada ? 
-              router.push({
-                pathname: '/entrarSalaPrivada',
-                params: {codigo: item.codigo}
-              }) :
-              entrarSala(item.codigo, player)
-            }}
-          >
-            <Text style={styles.playerName}>
-              {item.codigo}
-            </Text>
-            {item.privada && (
-              <FontAwesome name="lock" size={16} color="#d32f2f" />
-            )}
-          </TouchableOpacity>
-        )}
-      />
-
+  <FlatList
+    data={salas}
+    keyExtractor={(item) => item.codigo}
+    numColumns={3}
+    columnWrapperStyle={styles.row}
+    contentContainerStyle={{ paddingBottom: 10 }}
+    style={{ maxHeight: 320 }}
+    renderItem={({ item }) => (
       <TouchableOpacity
-        style={styles.redButton}
-        onPress={() => router.replace('/home')}
+        style={styles.playerCard}
+        onPress={() => {
+          item.privada
+            ? router.push({
+                pathname: '/entrarSalaPrivada',
+                params: { codigo: item.codigo },
+              })
+            : entrarSala(item.codigo, player)
+        }}
       >
-        <Text style={[styles.buttonText, { color: "#fff" }]}>Voltar</Text>
+        <Text style={styles.playerName}>{item.codigo}</Text>
+        {item.privada && (
+          <FontAwesome name="lock" size={16} color="#d32f2f" />
+        )}
       </TouchableOpacity>
-    </View>
+    )}
+  />
+
+  <View style={styles.paginationControls}>
+    <TouchableOpacity
+      style={styles.pageButton}
+      onPress={() => {
+        setPage(prev => Math.max(prev - 1, 1))
+      }}
+      disabled={page === 1}
+    >
+      <Text style={styles.pageButtonText}>{'<'}</Text>
+    </TouchableOpacity>
+
+    <Text style={styles.pageIndicator}>Página {page}</Text>
+
+    <TouchableOpacity
+      style={styles.pageButton}
+      onPress={() => {
+        const totalPaginas = Math.ceil(
+          Object.values(salas).filter(s => !s.jogoIniciado).length / perPage
+        )
+        if (page < totalPaginas) {
+          setPage(prev => prev + 1)
+        }
+      }}
+    >
+      <Text style={styles.pageButtonText}>{'>'}</Text>
+    </TouchableOpacity>
+  </View>
+
+  <TouchableOpacity
+    style={styles.redButton}
+    onPress={() => router.replace('/home')}
+  >
+    <Text style={[styles.buttonText, { color: "#fff" }]}>Voltar</Text>
+  </TouchableOpacity>
+</View>
   )
 }

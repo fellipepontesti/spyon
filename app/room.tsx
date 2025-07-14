@@ -25,6 +25,7 @@ export default function Room() {
     return () => {
       socket.off("erro")
     }
+
   }, [])
 
   useEffect(() => {

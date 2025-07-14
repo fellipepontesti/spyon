@@ -23,11 +23,15 @@ export default function ResultadoVotacao() {
 
   useEffect(() => {
     socket.on("skip", () => {
-      router.replace({ pathname: "/game", params: { codigo: sala?.codigo, message: "Votação pulada! O espião continua entre a galera..." } })
+      router.replace({ pathname: "/game", params: { 
+        codigo: sala?.codigo, message: "Votação pulada! O espião continua entre a galera..." 
+      } })
     })
 
     socket.on("jogoContinua", () => {
-      router.replace({ pathname: "/game", params: { codigo: sala?.codigo, message: "Iih deu ruim! O espião continua entre a galera..." } })
+      router.replace({ pathname: "/game", params: { 
+        codigo: sala?.codigo, message: "Iih deu ruim! O espião continua entre a galera..." 
+      } })
     })
 
     socket.on("pontoGanho", () => {
@@ -35,7 +39,9 @@ export default function ResultadoVotacao() {
     })
 
     socket.on("fimDeJogo", (data) => {
-      router.replace({ pathname: "/vencedor", params: { codigo: sala?.codigo, vencedor: data.vencedor } })
+      router.replace({ pathname: "/vencedor", params: { 
+        codigo: sala?.codigo, vencedor: data.vencedor 
+      } })
     })
 
     return () => {
