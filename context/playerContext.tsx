@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { getObjectDataAsyncStorage } from "@/storage/getData"
-import { PlayerDTO } from "@/dto/playerDTO"
-import { socket } from "@/services/socket"
+import { getObjectDataAsyncStorage } from "@spyon/storage/getData"
+import { PlayerDTO } from "@spyon/dto/playerDTO"
+import { socket } from "@spyon/services/socket"
 
 export interface PlayerContextProps {
   player: PlayerDTO

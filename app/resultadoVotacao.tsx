@@ -1,12 +1,11 @@
 import { View, Text, ActivityIndicator, TouchableOpacity, Modal } from 'react-native'
 import { useEffect, useState } from 'react'
 import { router, useLocalSearchParams } from 'expo-router'
-import { darkTheme, lightTheme } from '@/styles/theme'
-import { useTheme } from '@/context/themeContext'
-import { useSala } from '@/context/salaContext'
-import { socket } from '@/services/socket'
-import { usePlayer } from '@/context/playerContext'
-import LottieView from 'lottie-react-native'
+import { darkTheme, lightTheme } from '@spyon/styles/theme'
+import { useTheme } from '@spyon/context/themeContext'
+import { useSala } from '@spyon/context/salaContext'
+import { socket } from '@spyon/services/socket'
+import { usePlayer } from '@spyon/context/playerContext'
 
 export default function ResultadoVotacao() {
   const {player, setVitorias} = usePlayer()
@@ -93,14 +92,7 @@ export default function ResultadoVotacao() {
       return (
         <Modal visible transparent animationType="fade">
           <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
-            {mostrarResultado && (
-              <LottieView
-                source={require("@/assets/animations/fireworks.json")}
-                autoPlay
-                loop
-                style={{ position: "absolute", width: "100%", height: "100%" }}
-              />
-            )}
+            {/* ANIMAÇÃO AQUI */}
             <Text style={styles.title}>
               {!mostrarResultado
                 && `Revelando resultado em ${tempo} ${tempo === 1 ? "segundo" : "segundos"}...`

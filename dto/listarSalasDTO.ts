@@ -1,4 +1,4 @@
-import { RoomDataDTO } from "./roomDTO";
+import { RoomDataDTO } from "@spyon/dto/roomDTO";
 
 export interface ListarSalasOutputDTO {
   salas: RoomDataDTO[],

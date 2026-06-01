@@ -1,11 +1,11 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
-import { criarSala, socket } from "@/services/socket";
-import { RoomDTO } from "@/dto/roomDTO";
+import { criarSala, socket } from "@spyon/services/socket";
+import { RoomDTO } from "@spyon/dto/roomDTO";
 import { Href, router } from "expo-router";
-import { usePlayer } from "@/context/playerContext";
-import { useTheme } from "@/context/themeContext";
-import { darkTheme, lightTheme } from "@/styles/theme";
+import { usePlayer } from "@spyon/context/playerContext";
+import { useTheme } from "@spyon/context/themeContext";
+import { darkTheme, lightTheme } from "@spyon/styles/theme";
 
 export default function CriacaoSala() {
   const {player} = usePlayer();

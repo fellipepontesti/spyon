@@ -1,9 +1,9 @@
 import { io } from "socket.io-client"
-import { CriarSalaDTO } from "@/dto/criarSalaDTO"
-import { EntrarSalaDTO } from "@/dto/entrarSalaDTO"
-import { PlayerDTO } from "@/dto/playerDTO"
+import { CriarSalaDTO } from "@spyon/dto/criarSalaDTO"
+import { EntrarSalaDTO } from "@spyon/dto/entrarSalaDTO"
+import { PlayerDTO } from "@spyon/dto/playerDTO"
 
-const SERVER_URL = "http://192.168.0.26:3000"
+const SERVER_URL = "http://192.168.0.6:3000"
 export const socket = io(SERVER_URL, { transports: ["websocket"] })
 
 export const criarSala = (data: CriarSalaDTO) => {
@@ -11,10 +11,10 @@ export const criarSala = (data: CriarSalaDTO) => {
 }
 
 export const entrarSala = (
-  codigo: string, 
-  player: PlayerDTO, 
+  codigo: string,
+  player: PlayerDTO,
   password?: string,
-  owner?: boolean  
+  owner?: boolean
 ) => {
   const data: EntrarSalaDTO = { player, codigo, password, owner }
   socket.emit("entrarSala", data)
@@ -33,11 +33,11 @@ export const desconectar = (codigo: string) => {
 }
 
 export const aceitarDiscussao = (codigo: string) => {
-  socket.emit("votarNaDiscussao", {codigo, discussao: true})
+  socket.emit("votarNaDiscussao", { codigo, discussao: true })
 }
 
 export const recusarDiscussao = (codigo: string) => {
-  socket.emit("votarNaDiscussao", {codigo, discussao: false})
+  socket.emit("votarNaDiscussao", { codigo, discussao: false })
 }
 
 export const iniciarJogo = (codigo: string) => {
@@ -48,3 +48,9 @@ export const pedirDiscussao = (codigo: string) => {
   socket.emit("pedirDiscussao", codigo)
 }
 
+export const testarConexao = () => {
+  socket.emit("testeConexao", {
+    origem: "tela-inicial",
+    enviadoEm: new Date().toISOString()
+  })
+}

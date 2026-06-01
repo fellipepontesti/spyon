@@ -1,4 +1,4 @@
-import { FuncaoDTO, PlayerDTO } from "./playerDTO"
+import { FuncaoDTO, PlayerDTO } from "@spyon/dto/playerDTO"
 
 export interface RoomDTO {
   [key: string]: RoomDataDTO

@@ -1,4 +1,4 @@
-import { PlayerDTO } from "./playerDTO"
+import { PlayerDTO } from "@spyon/dto/playerDTO"
 
 export interface EntrarSalaDTO {
   codigo: string

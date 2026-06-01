@@ -1,13 +1,13 @@
 import { router } from "expo-router"
 import { useEffect, useState } from "react"
-import { Text, View, TouchableOpacity, FlatList } from "react-native"
-import { usePlayer } from "@/context/playerContext"
-import { useTheme } from "@/context/themeContext"
-import { darkTheme, lightTheme } from "@/styles/theme"
-import { RoomDTO, RoomDataDTO } from "@/dto/roomDTO"
-import { entrarSala, socket } from "@/services/socket"
+import { Text, View, TouchableOpacity, FlatList, useWindowDimensions } from "react-native"
+import { usePlayer } from "@spyon/context/playerContext"
+import { useTheme } from "@spyon/context/themeContext"
+import { darkTheme, lightTheme } from "@spyon/styles/theme"
+import { RoomDTO, RoomDataDTO } from "@spyon/dto/roomDTO"
+import { entrarSala, socket } from "@spyon/services/socket"
 import { FontAwesome } from "@expo/vector-icons"
-import { ListarSalasOutputDTO } from "@/dto/listarSalasDTO"
+import { ListarSalasOutputDTO } from "@spyon/dto/listarSalasDTO"
 
 export default function ListaDeSalas() {
   const { player } = usePlayer()
@@ -15,6 +15,8 @@ export default function ListaDeSalas() {
   const { theme } = useTheme()
   const styles = theme === "dark" ? darkTheme : lightTheme
   const [count, setCount] = useState(0)
+  const { width, height } = useWindowDimensions()
+  const columns = width < 380 ? 2 : width >= 760 ? 4 : 3
 
   const [page, setPage] = useState(1)
   const limit = 12
@@ -64,12 +66,13 @@ export default function ListaDeSalas() {
   <Text style={styles.title}>Salas online</Text>
 
   <FlatList
+    key={columns}
     data={salas}
     keyExtractor={(item) => item.codigo}
-    numColumns={3}
+    numColumns={columns}
     columnWrapperStyle={styles.row}
     contentContainerStyle={{ paddingBottom: 10 }}
-    style={{ maxHeight: 320 }}
+    style={{ width: "100%", maxWidth: 620, maxHeight: Math.min(420, height * 0.48) }}
     renderItem={({ item }) => (
       <TouchableOpacity
         style={styles.playerCard}

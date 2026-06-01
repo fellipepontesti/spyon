@@ -1,6 +1,7 @@
-import { PlayerProvider } from "@/context/playerContext"
-import { SalaProvider } from "@/context/salaContext"
-import { ThemeProvider } from "@/context/themeContext"
+import { PlayerProvider } from "@spyon/context/playerContext"
+import { SalaProvider } from "@spyon/context/salaContext"
+import { ThemeProvider } from "@spyon/context/themeContext"
+import { VoiceProvider } from "@spyon/context/VoiceContext"
 import { Stack } from "expo-router"
 
 export default function Layout() {
@@ -8,7 +9,9 @@ export default function Layout() {
     <ThemeProvider>
       <PlayerProvider>
         <SalaProvider>
-          <Stack screenOptions={{ headerShown: false, gestureEnabled: false }} />
+          <VoiceProvider>
+            <Stack screenOptions={{ headerShown: false, gestureEnabled: false }} />
+          </VoiceProvider>
         </SalaProvider>
       </PlayerProvider>
     </ThemeProvider>

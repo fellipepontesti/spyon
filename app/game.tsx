@@ -4,13 +4,15 @@ import {
   recusarDiscussao,
   desconectar,
   socket
-} from "@/services/socket"
-import { View, Text, TouchableOpacity, Modal } from "react-native"
+} from "@spyon/services/socket"
+import { View, Text, TouchableOpacity, Modal, StyleSheet } from "react-native"
 import { useEffect, useState } from "react"
 import { Href, router, useLocalSearchParams } from "expo-router"
-import { darkTheme, lightTheme } from "@/styles/theme"
-import { useTheme } from "@/context/themeContext"
-import { useSala } from "@/context/salaContext"
+import { darkTheme, lightTheme } from "@spyon/styles/theme"
+import { useTheme } from "@spyon/context/themeContext"
+import { useSala } from "@spyon/context/salaContext"
+import { useVoiceChat } from "@spyon/context/VoiceContext"
+import { FontAwesome } from "@expo/vector-icons"
 
 export default function Game() {
   const { theme } = useTheme()
@@ -26,6 +28,14 @@ export default function Game() {
   const [modalDiscussao, setModalDiscussao] = useState(false)
   const [tempoDiscussao, setTempoDiscussao] = useState(15)
   const [respondeuDiscussao, setRespondeuDiscussao] = useState(false)
+
+  const {
+    isSupported,
+    muted,
+    toggleMute,
+    joinedVoice,
+    leaveVoiceChat
+  } = useVoiceChat()
 
 
   useEffect(() => {
@@ -122,6 +132,18 @@ export default function Game() {
         <Text style={styles.subtitle}>{message}</Text>
       }
 
+      {isSupported && joinedVoice && (
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: muted ? "#D43D3D" : "#159947", flexDirection: "row", gap: 8, justifyContent: "center" }]}
+          onPress={toggleMute}
+        >
+          <FontAwesome name={muted ? "microphone-slash" : "microphone"} size={18} color="#FFF" />
+          <Text style={[styles.buttonText, { color: "#FFF" }]}>
+            {muted ? "Desmutar Voz" : "Mutar Voz"}
+          </Text>
+        </TouchableOpacity>
+      )}
+
       <TouchableOpacity style={styles.button} onPress={() => pedirDiscussao(sala.codigo)}>
         <Text style={styles.buttonText}>Pedir votação</Text>
       </TouchableOpacity>
@@ -129,6 +151,9 @@ export default function Game() {
       <TouchableOpacity 
         style={styles.redButton}
         onPress={() => {
+          if (joinedVoice) {
+            leaveVoiceChat()
+          }
           desconectar(sala.codigo)
           router.replace('/home' as Href)
         }}
@@ -146,14 +171,14 @@ export default function Game() {
               setModalDiscussao(false)
               setRespondeuDiscussao(true)
             }}>
-              <Text style={styles.buttonText}>Aceitar</Text>
+              <Text style={styles.gameButtonText}>Aceitar</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.denyButton} onPress={() => {
               recusarDiscussao(sala.codigo)
               setModalDiscussao(false)
               setRespondeuDiscussao(true)
             }}>
-              <Text style={styles.buttonText}>Negar</Text>
+              <Text style={styles.gameButtonText}>Negar</Text>
             </TouchableOpacity>
           </View>
         </View>

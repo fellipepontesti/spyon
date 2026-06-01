@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import { socket } from "@/services/socket"
+import { socket } from "@spyon/services/socket"
 import { router } from "expo-router"
-import { RoomDataDTO } from "@/dto/roomDTO"
+import { RoomDataDTO } from "@spyon/dto/roomDTO"
 
 type SalaContextData = {
   sala: RoomDataDTO | null

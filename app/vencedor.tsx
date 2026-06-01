@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react"
 import { View, Text, Modal, TouchableOpacity } from "react-native"
 import { useLocalSearchParams, router } from "expo-router"
-import LottieView from "lottie-react-native"
-import { darkTheme, lightTheme } from "@/styles/theme"
-import { useTheme } from "@/context/themeContext"
-import { useSala } from "@/context/salaContext"
-import { entrarSala, socket, voltarPraSala } from "@/services/socket"
-import { usePlayer } from "@/context/playerContext"
-import { RoomDataDTO } from "@/dto/roomDTO"
+import { darkTheme, lightTheme } from "@spyon/styles/theme"
+import { useTheme } from "@spyon/context/themeContext"
+import { useSala } from "@spyon/context/salaContext"
+import { entrarSala, socket, voltarPraSala } from "@spyon/services/socket"
+import { usePlayer } from "@spyon/context/playerContext"
+import { RoomDataDTO } from "@spyon/dto/roomDTO"
 
 export default function Vencedor() {
   const {player} = usePlayer()
@@ -92,14 +91,7 @@ export default function Vencedor() {
   return (
     <Modal visible transparent animationType="fade">
       <View style={[styles.container, { justifyContent: "center", alignItems: "center" }]}>
-        {mostrarResultado && (
-          <LottieView
-            source={require("@/assets/animations/fireworks.json")}
-            autoPlay
-            loop
-            style={{ position: "absolute", width: "100%", height: "100%" }}
-          />
-        )}
+        {/* ANIMAÇÃO AQUI */}
         <Text style={styles.title}>
           {!mostrarResultado
             ? `Revelando resultado em ${tempo} ${tempo === 1 ? "segundo" : "segundos"}...`
@@ -125,10 +117,6 @@ export default function Vencedor() {
             <Text style={styles.title}>
               {esperandoDonoDaSala &&
                 'Aguardando o dono abrir a sala...'}
-            </Text>
-
-            <Text style={styles.title}>
-              {`Sala liberada: ${salaLiberada}, Redirecionar: ${redirecionar}, Esperando dono da sala: ${esperandoDonoDaSala}`}
             </Text>
           </>
 

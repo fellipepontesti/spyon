@@ -1,10 +1,10 @@
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import { useEffect, useState } from "react";
-import { entrarSala, socket } from "@/services/socket";
+import { entrarSala, socket } from "@spyon/services/socket";
 import { Href, router, useLocalSearchParams } from "expo-router";
-import { usePlayer } from "@/context/playerContext";
-import { useTheme } from "@/context/themeContext";
-import { darkTheme, lightTheme } from "@/styles/theme";
+import { usePlayer } from "@spyon/context/playerContext";
+import { useTheme } from "@spyon/context/themeContext";
+import { darkTheme, lightTheme } from "@spyon/styles/theme";
 
 export default function entrarSalaPrivada() {
   const {player} = usePlayer();
@@ -41,6 +41,7 @@ export default function entrarSalaPrivada() {
         maxLength={6} 
       />
       <TouchableOpacity
+        disabled={password.length < 4}
         onPress={() => entrarSala(codigo, player, password)}
         style={[
           styles.button,
@@ -51,7 +52,7 @@ export default function entrarSalaPrivada() {
       >
         <Text style={[
           styles.buttonText,
-          { color: password.length < 4 ? "#555" : '#FFF'}
+          { color: '#FFF'}
         ]}>Entrar na sala</Text>
       </TouchableOpacity>
 

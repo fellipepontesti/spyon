@@ -1,11 +1,11 @@
-import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from "react-native"
+import { View, Text, TouchableOpacity, FlatList, ActivityIndicator, useWindowDimensions } from "react-native"
 import { useEffect, useState } from "react"
-import { socket } from "@/services/socket"
+import { socket } from "@spyon/services/socket"
 import { router, useLocalSearchParams } from "expo-router"
-import { darkTheme, lightTheme } from "@/styles/theme"
-import { useTheme } from "@/context/themeContext"
-import { PlayerDTO } from "@/dto/playerDTO"
-import { useSala } from "@/context/salaContext"
+import { darkTheme, lightTheme } from "@spyon/styles/theme"
+import { useTheme } from "@spyon/context/themeContext"
+import { PlayerDTO } from "@spyon/dto/playerDTO"
+import { useSala } from "@spyon/context/salaContext"
 
 export default function Votacao() {
   const { theme } = useTheme()
@@ -15,6 +15,8 @@ export default function Votacao() {
   const [mostrarMensagem, setMostrarMensagem] = useState(true)
   const [votoConfirmado, setVotoConfirmado] = useState(false)
   const [tempoRestante, setTempoRestante] = useState(120)
+  const { width, height } = useWindowDimensions()
+  const columns = width < 380 ? 2 : width >= 760 ? 4 : 3
 
   useEffect(() => {
     socket.on("aguardandoResultado", () => {
@@ -66,11 +68,13 @@ export default function Votacao() {
           <View style={styles.playersContainer}>
             <Text style={styles.playersTitle}>Escolha seu suspeito:</Text>
             <FlatList
-              scrollEnabled={false}
+              key={columns}
               data={jogadoresDisponiveis}
               keyExtractor={(item) => item.socketId}
-              numColumns={3}
+              numColumns={columns}
               columnWrapperStyle={styles.row}
+              contentContainerStyle={{ paddingVertical: 4 }}
+              style={{ width: "100%", maxHeight: Math.min(360, height * 0.42) }}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => setAcusado(item)}

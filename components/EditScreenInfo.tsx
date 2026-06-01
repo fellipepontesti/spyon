@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { ExternalLink } from './ExternalLink';
-import { MonoText } from './StyledText';
-import { Text, View } from './Themed';
+import { ExternalLink } from '@spyon/components/ExternalLink';
+import { MonoText } from '@spyon/components/StyledText';
+import { Text, View } from '@spyon/components/Themed';
 
-import Colors from '@/constants/Colors';
+import Colors from '@spyon/constants/Colors';
 
 export default function EditScreenInfo({ path }: { path: string }) {
   return (

@@ -1,14 +1,16 @@
-import { usePlayer } from '@/context/playerContext'
-import { useTheme } from '@/context/themeContext'
-import { entrarSala, socket } from '@/services/socket'
-import { darkTheme, lightTheme } from '@/styles/theme'
+import { usePlayer } from '@spyon/context/playerContext'
+import { useTheme } from '@spyon/context/themeContext'
+import { entrarSala, socket } from '@spyon/services/socket'
+import { darkTheme, lightTheme } from '@spyon/styles/theme'
 import { Href, router, useLocalSearchParams } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 export default function BuscarSala() {
   const {player} = usePlayer()
-  const [codigo, setCodigo] = useState('')
+  const params = useLocalSearchParams()
+  const codigoConvite = typeof params.codigo === "string" ? params.codigo : ""
+  const [codigo, setCodigo] = useState(codigoConvite)
   const { theme } = useTheme()
   const styles = theme === "dark" ?  darkTheme : lightTheme
 
@@ -21,10 +23,16 @@ export default function BuscarSala() {
       router.push({ pathname: '/entrarSalaPrivada', params: { codigo } })
     })
 
+    // Se vier com código de convite e o jogador tiver nome, entra na sala automaticamente
+    if (codigoConvite && player.nome) {
+      entrarSala(codigoConvite, player)
+    }
+
     return () => {
       socket.off('salaEncontrada')
+      socket.off('salaPrivada')
     }
-  }, [])
+  }, [codigoConvite, player.nome])
 
   return (
     <View style={styles.container}>
@@ -60,4 +68,3 @@ export default function BuscarSala() {
     </View>
   )
 }
-
